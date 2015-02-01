@@ -12,7 +12,7 @@ package calculadoralr;
 public class CalculadoraLR {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments mu
      */
     public static void main(String[] args) {
         // TODO code application logic here
