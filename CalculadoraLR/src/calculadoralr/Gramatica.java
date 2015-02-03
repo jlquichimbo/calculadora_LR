@@ -18,6 +18,7 @@ public class Gramatica {
     private ArrayList<Regla> reglasGramatica;
     private ArrayList<Conjunto> conjuntosGramatica;
     private ArrayList<Integer> aceptadas;
+    private ArrayList<String> cabeceraTabla;
     private Conjunto primeraCerradura;
     public int recorrido;
     private boolean conjRecorrido;
@@ -27,6 +28,7 @@ public class Gramatica {
     public Gramatica(ArrayList<Regla> reglasGramatica) {
         this.reglasGramatica = reglasGramatica;
         this.conjuntosGramatica = new ArrayList<>();
+        this.cabeceraTabla = new ArrayList<>();
         this.conjRecorrido = false;
 //        this.conjuntosGramatica.add(new Conjunto(reglasGramatica));
     }
@@ -39,11 +41,6 @@ public class Gramatica {
 
         }
 
-    }
-
-    public ArrayList<Regla> cerradura(String simboloNT) {
-
-        return null;
     }
 
     public Conjunto recorrerReglas(Conjunto objConjBase) {
@@ -66,6 +63,7 @@ public class Gramatica {
 
                 while (!conjRecorrido) {
                     simbIrX = recorrerReglasConjunto(objConjBase.getReglasConjunto(), getRecorrido());
+                    cabeceraTabla.add(simbIrX);
                     objConjJ = new Conjunto(ir_A(simbIrX, objConjBase));
 //                    if (ir_A(simbIrX, objConjBase) == null) {
 //                        break;
@@ -77,6 +75,8 @@ public class Gramatica {
 //                    return objConjJ;
                     i++;
                 }
+                System.out.println("CABECERA:");
+                imprimirArray(null, cabeceraTabla);
                 setRecorrido(0);
             }
         } catch (CloneNotSupportedException ex) {
@@ -110,6 +110,26 @@ public class Gramatica {
         return simbolo;
     }
 
+    /**
+     * @param simboloNT
+     * @return the trasero
+     */
+    public ArrayList<Regla> cerradura(String simboloNT) {
+        ArrayList<Regla> derivacionesNT = new ArrayList<>();
+        for (Regla derivacionesI0 : getPrimeraCerradura().getReglasConjunto()) {
+            if (derivacionesI0.getCabeza().equals(simboloNT)) {
+                derivacionesNT.add(derivacionesI0);
+            }
+        }
+        return derivacionesNT;
+    }
+
+    /**
+     * @param simbolo
+     * @param conjBase
+     * @return the otro trasero
+     * @throws java.lang.CloneNotSupportedException
+     */
     public ArrayList<Regla> ir_A(String simbolo, Conjunto conjBase) throws CloneNotSupportedException {
         try {
             String cuerpoRegla;
@@ -124,9 +144,23 @@ public class Gramatica {
                 if (String.valueOf(cuerpoRegla.charAt(cuerpoRegla.indexOf(".") + 1)).equals(simbolo)) {
                     reglasNew.add(conjBase.getReglasConjunto().get(j));
                     reglasNew.get(i).setCuerpo(moverPuntero(simbolo, cuerpoRegla));
+                    String cuerpoNew = reglasNew.get(i).getCuerpo();
+                    try {
+                        char nextSimbol = cuerpoNew.charAt(cuerpoNew.indexOf(".")+1);
 
-                    /* si la regla o el conjunto estan ya recorridos return*/
-                    if ((reglasNew.get(i).getCuerpo().indexOf(".")) == cuerpoRegla.length() - 1 && (j==conjBase.getReglasConjunto().size()-1)) {
+                        /*Si lo que sigue del '.' es un NT*/
+                        if (Character.isUpperCase(nextSimbol)) {
+                            ArrayList<Regla> derivacionesNT = cerradura(String.valueOf(nextSimbol));
+                            for (Regla derivaciones : derivacionesNT) {
+                                reglasNew.add(derivaciones);
+                            }
+
+                        }
+                    } catch (Exception ex) {
+                        
+                    }
+                    /*Si es el ultimo elemento del conjunto*/
+                    if ((reglasNew.get(i).getCuerpo().indexOf(".")) == cuerpoRegla.length() - 1 && (j == conjBase.getReglasConjunto().size() - 1)) {
                         setConjRecorrido(true);
                     }
                 } else {
@@ -153,6 +187,19 @@ public class Gramatica {
         cuerpoNew = cuerpoRegla.replace("." + simbolo, simbolo + ".");
 
         return cuerpoNew;
+    }
+
+    public static void imprimirArray(String[] array, ArrayList list) {
+        if (array != null) {
+            for (String array1 : array) {
+                System.out.print(array1 + '\t');
+            }
+        }
+        if (list != null) {
+            for (Object list1 : list) {
+                System.out.print((String) list1 + "\t");
+            }
+        }
     }
 
     /**
@@ -251,6 +298,20 @@ public class Gramatica {
      */
     public void setConjRecorrido(boolean conjRecorrido) {
         this.conjRecorrido = conjRecorrido;
+    }
+
+    /**
+     * @return the cabeceraTabla
+     */
+    public ArrayList<String> getCabeceraTabla() {
+        return cabeceraTabla;
+    }
+
+    /**
+     * @param cabeceraTabla the cabeceraTabla to set
+     */
+    public void setCabeceraTabla(ArrayList<String> cabeceraTabla) {
+        this.cabeceraTabla = cabeceraTabla;
     }
 
 }

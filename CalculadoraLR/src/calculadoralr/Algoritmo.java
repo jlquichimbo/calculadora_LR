@@ -27,7 +27,7 @@ public class Algoritmo {
         }
         if (list != null) {
             for (Object list1 : list) {
-                System.out.print(list1 + "\t");
+                System.out.print((String)list1 + "\t");
             }
         }
     }
