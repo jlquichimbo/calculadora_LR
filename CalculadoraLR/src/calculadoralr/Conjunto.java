@@ -48,24 +48,9 @@ public class Conjunto implements Cloneable {
 
    
 
-    public String buscarCandidato(String cuerpo) {
-        String simbolo = null;
-        int posPuntero = 0;
-        posPuntero = cuerpo.indexOf(".");
-        simbolo = String.valueOf(cuerpo.charAt(posPuntero + 1));
+   
 
-        return simbolo;
-    }
-
-    public String recorrerReglasConjunto() {
-        String simbolo = null;
-        for (Regla regla : reglasConjunto) {
-            simbolo = buscarCandidato(regla.getCuerpo());
-            break;
-        }
-        return simbolo;
-
-    }
+  
 
     public void crearTabla() {
 
