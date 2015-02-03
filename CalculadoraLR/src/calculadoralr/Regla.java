@@ -25,6 +25,10 @@ public class Regla implements Cloneable{
         return clone = (Regla) super.clone();
 
     }
+    
+    public void imprimirRegla(){
+        System.out.println(getCabeza() + " -> "+ getCuerpo());
+    }
 
     /**
      * @return the cabeza

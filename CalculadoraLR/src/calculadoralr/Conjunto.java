@@ -14,6 +14,12 @@ import java.util.ArrayList;
 public class Conjunto implements Cloneable {
 
     public ArrayList<Regla> reglasConjunto;
+    private String[] aceptadas;
+    private String[] enlaces;
+    private int recorrido;
+
+    public Conjunto() {
+    }
 
     public Conjunto(ArrayList<Regla> reglasConjunto) {
         this.reglasConjunto = reglasConjunto;
@@ -24,28 +30,51 @@ public class Conjunto implements Cloneable {
     }
 
     public Regla generarPrima(String cabeza) {
-        Regla rPrimRegla = new Regla(cabeza.concat("^"), cabeza) {};
+        Regla rPrimRegla = new Regla(cabeza.concat("^"), cabeza) {
+        };
         return rPrimRegla;
     }
 
     public void crearPunteroInicial() {
 
+        for (Regla regla : reglasConjunto) {
+            regla.setCuerpo("." + regla.getCuerpo());
+        }
     }
 
-    public void moverPuntero() {
+    
+    /*Generar nuevo conjunto de reglas
+     */
 
+   
+
+    public String buscarCandidato(String cuerpo) {
+        String simbolo = null;
+        int posPuntero = 0;
+        posPuntero = cuerpo.indexOf(".");
+        simbolo = String.valueOf(cuerpo.charAt(posPuntero + 1));
+
+        return simbolo;
     }
 
-    public String buscarCandidato() {
-        return null;
-    }
-
-    public void recorrerReglasConjunto() {
+    public String recorrerReglasConjunto() {
+        String simbolo = null;
+        for (Regla regla : reglasConjunto) {
+            simbolo = buscarCandidato(regla.getCuerpo());
+            break;
+        }
+        return simbolo;
 
     }
 
     public void crearTabla() {
 
+    }
+
+    public void imprimirConjunto() {
+        for (Regla regla : reglasConjunto) {
+            regla.imprimirRegla();
+        }
     }
 
     @Override
@@ -69,6 +98,48 @@ public class Conjunto implements Cloneable {
      */
     public void setReglasConjunto(ArrayList<Regla> reglasConjunto) {
         this.reglasConjunto = reglasConjunto;
+    }
+
+    /**
+     * @return the aceptadas
+     */
+    public String[] getAceptadas() {
+        return aceptadas;
+    }
+
+    /**
+     * @param aceptadas the aceptadas to set
+     */
+    public void setAceptadas(String[] aceptadas) {
+        this.aceptadas = aceptadas;
+    }
+
+    /**
+     * @return the enlaces
+     */
+    public String[] getEnlaces() {
+        return enlaces;
+    }
+
+    /**
+     * @param enlaces the enlaces to set
+     */
+    public void setEnlaces(String[] enlaces) {
+        this.enlaces = enlaces;
+    }
+
+    /**
+     * @return the recorrido
+     */
+    public int getRecorrido() {
+        return recorrido;
+    }
+
+    /**
+     * @param recorrido the recorrido to set
+     */
+    public void setRecorrido(int recorrido) {
+        this.recorrido = recorrido;
     }
 
 }

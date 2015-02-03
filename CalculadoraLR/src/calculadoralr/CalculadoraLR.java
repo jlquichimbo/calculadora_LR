@@ -59,12 +59,17 @@ public class CalculadoraLR {
 //        objAlgoritmo.imprimirTablaAcciones();
         
         String cadena = JOptionPane.showInputDialog("Ingrese Cadena:");
-        objAlgoritmo.correrAlgoritmo(cadena, reglas);
+//        objAlgoritmo.correrAlgoritmo(cadena, reglas);
         
        
         Gramatica objGram = new Gramatica(reglas);
         objGram.generarConjuntos();
-       
+        
+//        String str = "t.+f";
+//        str = str.replace(".+", "+.");
+//        System.out.println("cambio: "+str);
+//        
+//       
         
         
     }
